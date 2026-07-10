@@ -31,7 +31,7 @@ public:
         ListNode*curr = head;
         ListNode*prev = NULL;
         int count=0;
-        while(curr!=NULL && count<k){
+        while(count<k){
             forward = curr->next;
             curr->next = prev;
             prev = curr;
