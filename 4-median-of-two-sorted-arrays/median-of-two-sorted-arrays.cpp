@@ -1,37 +1,35 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        // brute force
         int n = nums1.size();
         int m = nums2.size();
+        int total = n + m;
+        
+        int reqIndex = total / 2; // Median tak pahunchne ki position
+        
+        int i = 0, j = 0;
+        int count = 0;
+        int prev = 0, curr = 0;
 
-        vector<int>temp;
-
-        int i=0;
-        int j = 0;
-
-        while(i<n && j<m){
-            if(nums1[i]<nums2[j]){
-                temp.push_back(nums1[i]);
+        // Sirf tab tak chalo jab tak required index tak na pahunch jaayein
+        while (count <= reqIndex) {
+            prev = curr; // Last second element track karo
+            
+            if (i < n && (j >= m || nums1[i] < nums2[j])) {
+                curr = nums1[i];
                 i++;
-            }
-            else{
-                temp.push_back(nums2[j]);
+            } else {
+                curr = nums2[j];
                 j++;
             }
+            count++;
         }
-        while(i<n){
-            temp.push_back(nums1[i]);
-            i++;
-        }
-        while(j<m){
-            temp.push_back(nums2[j]);
-            j++;
-        }
-        int size = m+n;
-        if(size%2==1) return temp[size/2];
 
-        return (temp[size/2]+temp[(size/2)-1])/2.0;
-
+        // Even length me do middle elements ka average, Odd me single middle element
+        if (total % 2 == 0) {
+            return (prev + curr) / 2.0;
+        } else {
+            return curr;
+        }
     }
 };
