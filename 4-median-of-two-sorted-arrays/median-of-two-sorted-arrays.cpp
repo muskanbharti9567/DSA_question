@@ -3,33 +3,40 @@ public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
         int n = nums1.size();
         int m = nums2.size();
-        int total = n + m;
-        
-        int reqIndex = total / 2; // Median tak pahunchne ki position
-        
-        int i = 0, j = 0;
-        int count = 0;
-        int prev = 0, curr = 0;
+        int total = (n + m + 1 )/2;
 
-        // Sirf tab tak chalo jab tak required index tak na pahunch jaayein
-        while (count <= reqIndex) {
-            prev = curr; // Last second element track karo
+        if(n>m) return findMedianSortedArrays(nums2,nums1);
+
+        int low = 0;
+        int high = n;
+    
+        while(low<=high){
+            int mid1 = low + (high-low)/2;
+            int mid2 = total - mid1;
+
+            int l1 = (mid1==0) ? INT_MIN : nums1[mid1-1];
+            int l2 = (mid2==0) ? INT_MIN : nums2[mid2-1];
+            int r1 = (mid1==n) ? INT_MAX : nums1[mid1];
+            int r2 = (mid2==m) ? INT_MAX : nums2[mid2];
             
-            if (i < n && (j >= m || nums1[i] < nums2[j])) {
-                curr = nums1[i];
-                i++;
-            } else {
-                curr = nums2[j];
-                j++;
+            if(l1<=r2 && l2<=r1){
+                if((n+m)%2==1){
+                    return max(l1,l2);
+                }
+                else{
+                    return (max(l1,l2)+min(r1,r2))/2.0;
+                }
             }
-            count++;
+            else{
+                if(l1>r2){
+                    high = mid1-1;
+                }
+                else{
+                    low = mid1+1;
+                }
+            }
         }
+        return 0.0;
 
-        // Even length me do middle elements ka average, Odd me single middle element
-        if (total % 2 == 0) {
-            return (prev + curr) / 2.0;
-        } else {
-            return curr;
-        }
     }
 };
