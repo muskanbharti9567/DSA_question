@@ -1,28 +1,30 @@
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        // Initialize two pointers at opposite ends of the array
-        int left = 0;
-        int right = height.size() - 1;
-        int max_water = 0;
-        
-        while (left < right) {
-            // The water level is limited by the shorter of the two walls
-            int current_height = min(height[left], height[right]);
-            int current_width = right - left;
-            
-            // Calculate current area and update max_water if it's larger
-            int current_area = current_height * current_width;
-            max_water = max(max_water, current_area);
-            
-            // Move the pointer pointing to the shorter wall inward.
-            if (height[left] < height[right]) {
-                left++;
-            } else {
-                right--;
+        int n = height.size();
+
+        int i = 0;
+        int j = n-1;
+        int maxwater = 0;
+
+        while(i<=j){
+            int width = j-i;
+            int h = min(height[i],height[j]);
+
+            int area = width*h;
+
+            maxwater = max(maxwater,area);
+
+            if(height[i]>height[j]){
+                j--;
             }
+            else{
+                i++;
+            }
+
         }
+        return maxwater;
+
         
-        return max_water;
     }
 };
